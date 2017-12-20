@@ -67,6 +67,17 @@ const enterEdit = (function ($, restaurants) {
                 $("button#newGroupOrder").show();
                 formArr = $("form#newGroupOrder").serializeArray();
                 formObj = formArr.reduce(formArrToObj, {});
+                $("table tbody").append(
+                    "<tr>" +
+                    "<td>" + 1 + "</td>" +
+                    "<td>" + "Griffin,Kevin" + "</td>" +
+                    "<td>" + formObj.orderText + "</td>" +
+                    "<td>" + formObj.orderPrice + "</td>" +
+                    "<td>" + formObj.orderPrice * 0.07 + "</td>" +
+                    "<td>" + formObj.orderPrice + "</td>" +
+                    "</tr>"
+                );
+                $("table").show();
             });
             $("select#restaurant option").click(restaurants.changeUrl);
         });

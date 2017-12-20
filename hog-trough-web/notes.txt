@@ -31,3 +31,15 @@ Currently, these features are recognized:
     New global functions, such as Map, Set, WeakMap, and WeakSet.
 
     0b- and 0o- number literals.
+
+//
+
+        <form id="newGroupOrder" style="display: none;">
+
+<select class="form-control" id="restaurant" name="restaurant">
+<input type="text" class="form-control" id="orderText" placeholder="Order description" name="orderText">
+<input type="text" class="form-control" id="orderPrice" placeholder="0.00" name="orderPrice" pattern="\d+\.\d{2}">
+<textarea class="form-control" id="orderInstructions" name="orderInstructions" placeholder="Order by time..." rows="3"></textarea>
+<select class="form-control" id="numberOfOrders" name="numberOfOrders">
+
+//
