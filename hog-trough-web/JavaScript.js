@@ -1,23 +1,33 @@
-/*jslint browser, devel, es6, maxlen: 80*/
+/*jslint browser, devel, es6, maxlen: 80, this*/
 /*global $, jQuery*/
 
-const restaurants = (function () {
+const restaurants = (function ($) {
     "use strict";
+
     const restaurantsObj = {
+        "--TBD--": "https://www.google.com/",
         "BERTUCCI'S": "http://www.bertuccis.com/",
         "PAPA GINOS": "https://www.papaginos.com/menu"
     };
 
+    function changeUrl() {
+        $("form#newGroupOrder a").attr("href", restaurantsObj[this.value]);
+    }
+
     function get() {
         return restaurantsObj;
     }
+
     return {
+        changeUrl,
         get
     };
-}());
+
+}(jQuery));
 
 const orders = (function () {
     "use strict";
+
     let ordersArr = [];
 
     function add(newOrder) {
@@ -27,10 +37,12 @@ const orders = (function () {
     return {
         add
     };
+
 }());
 
 const enterEdit = (function ($, restaurants) {
     "use strict";
+
     let formArr = [];
     let formObj = {};
 
@@ -39,7 +51,6 @@ const enterEdit = (function ($, restaurants) {
         return total;
     }
 
-    $("select#restaurant").append("<option>--TBD--</option>");
     Object.keys(restaurants.get()).forEach(function (key) {
         $("select#restaurant").append(
             "<option>" + key + "</option>"
@@ -48,14 +59,16 @@ const enterEdit = (function ($, restaurants) {
 
     function displayForm() {
         $(function () {
-            $("form#newOrder").show();
-            $("form#newOrder").submit(function (event) {
+            $("button#newGroupOrder").hide();
+            $("form#newGroupOrder").show();
+            $("form#newGroupOrder").submit(function (event) {
                 event.preventDefault();
-                $("form#newOrder").hide();
-                formArr = $("form#newOrder").serializeArray();
+                $("form#newGroupOrder").hide();
+                $("button#newGroupOrder").show();
+                formArr = $("form#newGroupOrder").serializeArray();
                 formObj = formArr.reduce(formArrToObj, {});
-                debugger;
             });
+            $("select#restaurant option").click(restaurants.changeUrl);
         });
     }
 
@@ -67,10 +80,11 @@ const enterEdit = (function ($, restaurants) {
         displayForm,
         getFormData
     };
+
 }(jQuery, restaurants));
 
 // onload
 $(function driver() {
     "use strict";
-    $("button#newOrder").click(enterEdit.displayForm);
+    $("button#newGroupOrder").click(enterEdit.displayForm);
 });
