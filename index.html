@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base target="_top">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <?!= include("Stylesheet") ?>
+    <script>
+    var USER_OBJ = <<?!= userObj ?>;
+    </script>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <h2>Takeout Orders</h2>
+        <p>The .table-responsive class creates a responsive table which will scroll horizontally on small devices (under 768px). When viewing on anything larger than 768px wide, there is no difference:</p>
+
+        <!-- put button to start new order here -->
+
+        <div class="table-responsive">
+            <!-- 
+1. table should have no. of rows that coord is willing to pickup OR 10 rows with an "add me" button 
+2. should have date, order-by time, and coord info
+3. order should expire a set no. of hours after order-by-time
+-->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Age</th>
+                        <th>City</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Anna</td>
+                        <td>Pitt</td>
+                        <td>35</td>
+                        <td>New York</td>
+                        <td>USA</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="takeoutHeader"></div>
+        <div id="takeoutBody"></div>
+        <div id="takeoutFooter"></div>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<?!= include("JavaScript") ?>
+<?!= include("JsSortable") ?>
+
+</body>
+
+</html>
