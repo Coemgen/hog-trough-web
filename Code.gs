@@ -264,6 +264,17 @@ function deleteRestrFromSpreadsheet(index) {
 }
 
 
+/************************* New Functions **************************************/
+
+function getData() {
+  "use strict";
+  var dataObj = {};
+  dataObj.projectName = PropertiesService.getScriptProperties()
+  .getProperties()
+  .projectName;
+  return dataObj;
+}
+
 /************************* Main Function **************************************/
 
 
@@ -272,14 +283,13 @@ function deleteRestrFromSpreadsheet(index) {
 */
 function doGet() {
   "use strict";
-  var tmpl = HtmlService.createTemplateFromFile("index");
-  tmpl.userObj = AdminDirectory.Users.get(
-    Session.getActiveUser().getEmail(),
-    {
-      projection: "basic",
-      viewType: "domain_public"
-    }
+  return HtmlService.createTemplateFromFile("index").evaluate()
+  .setXFrameOptionsMode(
+    HtmlService.XFrameOptionsMode.ALLOWALL
+  )
+  .setTitle(
+    PropertiesService.getScriptProperties()
+    .getProperties()
+    .projectName
   );
-  return tmpl.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME)
-  .setTitle("Takeout Orders");
 }
