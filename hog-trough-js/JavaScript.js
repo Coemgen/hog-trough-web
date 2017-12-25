@@ -12,7 +12,10 @@
         };
 
         function changeUrl() {
-            $("form#newGroupOrder a").attr("href", restaurantsObj[this.value]);
+            $("form#newGroupOrder a").attr(
+                "href",
+                restaurantsObj[this.value]
+            );
         }
 
         function get() {
@@ -35,6 +38,7 @@
 
         function display(formDataObj) {
             let iter = [];
+            let orderPrice = 0;
             let str = "a";
             iter = str.repeat(+formDataObj.numberOfOrders).split("");
             $("table caption").text(formDataObj.restaurant);
@@ -51,14 +55,17 @@
                 );
             });
 
+            orderPrice = Number(formDataObj.orderPrice);
+
             $("table tbody tr:eq(0) td:eq(1)").text("Griffin,Kevin");
             $("table tbody tr:eq(0) td:eq(2)").text(formDataObj.orderText);
-            $("table tbody tr:eq(0) td:eq(3)").text(formDataObj.orderPrice);
+            $("table tbody tr:eq(0) td:eq(3)").text(orderPrice);
             $("table tbody tr:eq(0) td:eq(4)").text(
-                formDataObj.orderPrice * 0.07
+                orderPrice * 0.07
             );
             $("table tbody tr:eq(0) td:eq(5)").text(
-                +formDataObj.orderPrice + formDataObj.orderPrice * 0.07
+                orderPrice +
+                (orderPrice * 0.07)
             );
 
             $("table").show();
@@ -90,14 +97,16 @@
             $(function () {
                 $("button#newGroupOrder").hide();
                 $("form#newGroupOrder").show();
-                $("form#newGroupOrder").submit(function (event) {
-                    event.preventDefault();
-                    $("form#newGroupOrder").hide();
-                    $("button#newGroupOrder").show();
-                    formArr = $("form#newGroupOrder").serializeArray();
-                    formObj = formArr.reduce(formArrToObj, {});
-                    orders.display(formObj);
-                });
+                $("form#newGroupOrder").submit(
+                    function (event) {
+                        event.preventDefault();
+                        $("form#newGroupOrder").hide();
+                        $("button#newGroupOrder").show();
+                        formArr = $("form#newGroupOrder").serializeArray();
+                        formObj = formArr.reduce(formArrToObj, {});
+                        orders.display(formObj);
+                    }
+                );
                 $("select#restaurant option").click(restaurants.changeUrl);
             });
         }
