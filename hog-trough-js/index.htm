@@ -48,14 +48,14 @@
             <div class="form-group">
                 <label for="numberOfOrders">Maximum Number of Orders:</label>
                 <select class="form-control" id="numberOfOrders" name="numberOfOrders">
-                    <option>01</option>
-                    <option>02</option>
-                    <option>03</option>
-                    <option>04</option>
-                    <option>05</option>
-                    <option>10</option>
-                    <option>20</option>
-                    <option selected>Any</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                    <option value="4">Four</option>
+                    <option value="5">Five</option>
+                    <option value="10">Ten</option>
+                    <option value="20">Twenty</option>
+                    <option value="*" selected>Any</option>
                 </select>
             </div>
 
@@ -68,6 +68,7 @@
         </form>
 
         <table class="table table-striped table-bordered table-hover table-condensed" style="display: none;">
+            <caption></caption>
             <thead>
                 <tr>
                     <th>#</th>

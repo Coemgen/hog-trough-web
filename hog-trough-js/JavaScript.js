@@ -4,7 +4,7 @@
 (function () {
     "use strict";
 
-    const restaurants = (function ($) {
+    const restaurants = (function () {
         const restaurantsObj = {
             "--TBD--": "https://www.google.com/",
             "BERTUCCI'S": "http://www.bertuccis.com/",
@@ -24,7 +24,7 @@
             get
         };
 
-    }(jQuery));
+    }());
 
     const orders = (function () {
         let ordersArr = [];
@@ -34,15 +34,31 @@
         }
 
         function display(formDataObj) {
-            $("table tbody").append(
-                "<tr>" +
-                "<td>" + 1 + "</td>" +
-                "<td>" + "Griffin,Kevin" + "</td>" +
-                "<td>" + formDataObj.orderText + "</td>" +
-                "<td>" + formDataObj.orderPrice + "</td>" +
-                "<td>" + formDataObj.orderPrice * 0.07 + "</td>" +
-                "<td>" + formDataObj.orderPrice + "</td>" +
-                "</tr>"
+            let iter = [];
+            let str = "a";
+            iter = str.repeat(+formDataObj.numberOfOrders).split("")
+            $("table caption").text(formDataObj.restaurant);
+            iter.forEach(function (ignore, index) {
+                $("table tbody").append(
+                    "<tr>" +
+                    "<td>" + (index + 1) + "</td>" +
+                    "<td></td>" +
+                    "<td></td>" +
+                    "<td></td>" +
+                    "<td></td>" +
+                    "<td></td>" +
+                    "</tr>"
+                );
+            });
+
+            $("table tbody tr:eq(0) td:eq(1)").text("Griffin,Kevin");
+            $("table tbody tr:eq(0) td:eq(2)").text(formDataObj.orderText);
+            $("table tbody tr:eq(0) td:eq(3)").text(formDataObj.orderPrice);
+            $("table tbody tr:eq(0) td:eq(4)").text(
+                formDataObj.orderPrice * 0.07
+            );
+            $("table tbody tr:eq(0) td:eq(5)").text(
+                +formDataObj.orderPrice + formDataObj.orderPrice * 0.07
             );
 
             $("table").show();
@@ -55,7 +71,7 @@
 
     }());
 
-    const enterEdit = (function ($, restaurants) {
+    const enterEdit = (function () {
         let formArr = [];
         let formObj = {};
 
@@ -95,7 +111,7 @@
             getFormData
         };
 
-    }(jQuery, restaurants));
+    }());
 
     // onload
     $(function driver() {
