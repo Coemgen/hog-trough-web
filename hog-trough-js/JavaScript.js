@@ -39,7 +39,9 @@
         function display(formDataObj) {
             let iter = [];
             let orderPrice = 0;
+            let orderTotal = 0;
             let str = "a";
+            let tax = 0;
             iter = str.repeat(+formDataObj.numberOfOrders).split("");
             $("table caption").text(formDataObj.restaurant);
             iter.forEach(function (ignore, index) {
@@ -56,16 +58,43 @@
             });
 
             orderPrice = Number(formDataObj.orderPrice);
+            tax = orderPrice * 0.07;
+            orderTotal = orderPrice + tax;
 
             $("table tbody tr:eq(0) td:eq(1)").text("Griffin,Kevin");
             $("table tbody tr:eq(0) td:eq(2)").text(formDataObj.orderText);
-            $("table tbody tr:eq(0) td:eq(3)").text(orderPrice);
+            $("table tbody tr:eq(0) td:eq(3)").text(
+                orderPrice.toLocaleString(
+                    "en-US",
+                    {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )
+            );
             $("table tbody tr:eq(0) td:eq(4)").text(
-                orderPrice * 0.07
+                tax.toLocaleString(
+                    "en-US",
+                    {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )
             );
             $("table tbody tr:eq(0) td:eq(5)").text(
-                orderPrice +
-                (orderPrice * 0.07)
+                orderTotal.toLocaleString(
+                    "en-US",
+                    {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )
             );
 
             $("table").show();
