@@ -36,7 +36,7 @@
         function display(formDataObj) {
             let iter = [];
             let str = "a";
-            iter = str.repeat(+formDataObj.numberOfOrders).split("")
+            iter = str.repeat(+formDataObj.numberOfOrders).split("");
             $("table caption").text(formDataObj.restaurant);
             iter.forEach(function (ignore, index) {
                 $("table tbody").append(
