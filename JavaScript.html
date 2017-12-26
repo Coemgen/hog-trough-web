@@ -1,8 +1,8 @@
 <script>
 /*jslint browser, devel, es6, maxlen: 80*/
-/*global $, google, jQuery, Sortable*/
+/*global google, jQuery, Sortable*/
 
-(function () {
+(function (jQuery, google, Sortable) {
     "use strict";
 
     const restaurants = (function ($) {
@@ -37,14 +37,29 @@
         function add(newOrder) {
             ordersArr.push(newOrder);
         }
+        
+        function display() {
+//                    $("table tbody").append(
+//                        "<tr>" +
+//                        "<td>" + 1 + "</td>" +
+//                        "<td>" + "Griffin,Kevin" + "</td>" +
+//                        "<td>" + formObj.orderText + "</td>" +
+//                        "<td>" + formObj.orderPrice + "</td>" +
+//                        "<td>" + formObj.orderPrice * 0.07 + "</td>" +
+//                        "<td>" + formObj.orderPrice + "</td>" +
+//                        "</tr>"
+//                    );
+//                    $("table").show();
+        }
 
         return {
-            add
+            add,
+            display
         };
 
     }());
 
-    const enterEdit = (function ($, restaurants) {
+    const enterEdit = (function ($, google, orders, restaurants) {
         "use strict";
 
         let formArr = [];
@@ -71,17 +86,9 @@
                     $("button#newGroupOrder").show();
                     formArr = $("form#newGroupOrder").serializeArray();
                     formObj = formArr.reduce(formArrToObj, {});
-                    $("table tbody").append(
-                        "<tr>" +
-                        "<td>" + 1 + "</td>" +
-                        "<td>" + "Griffin,Kevin" + "</td>" +
-                        "<td>" + formObj.orderText + "</td>" +
-                        "<td>" + formObj.orderPrice + "</td>" +
-                        "<td>" + formObj.orderPrice * 0.07 + "</td>" +
-                        "<td>" + formObj.orderPrice + "</td>" +
-                        "</tr>"
-                    );
-                    $("table").show();
+                    google.script.run
+                    .withSuccessHandler(orders.display)
+                    .fileOrderToSpreadsheet(formObj);
                 });
                 $("select#restaurant option").click(restaurants.changeUrl);
             });
@@ -96,20 +103,25 @@
             getFormData
         };
 
-    }(jQuery, restaurants));
+    }(jQuery, google, orders, restaurants));
 
     //**************************************************************************
 
-    function main(dataObj) {
+    function main(dataObj, $) {
         $("h2").text(dataObj.projectName);
+        // TODO: if group orders, display them
+        // ---group orders code goes here---
         $("button#newGroupOrder").click(enterEdit.displayForm);
     }
 
     //**************************************************************************
 
-    $(function startUp() {
-        google.script.run.withSuccessHandler(main).getData();
+    jQuery(function startUp() {
+        google.script.run
+        .withSuccessHandler(main)
+        .withUserObject(jQuery)
+        .getData();
     });
 
-}());
+}(jQuery, google, Sortable));
 </script>
