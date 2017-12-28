@@ -28,69 +28,95 @@
 
     const orders = (function (google, $) {
         let ordersArr = [];
-        let tableHtml = $("table").html();
+        let tableHtml = $("div#tableHtml").html();
 
         function add(newOrder) {
             ordersArr.push(newOrder);
         }
 
-        function displayOrderTables(ordersJsonStr) {
-            let ordersJson = JSON.parse(ordersJsonStr);
-            ordersJson.restaurants.forEach(
+        function displayOrderTables(tempJsonStr) {
+            let tempJson = JSON.parse(tempJsonStr);
+            let ordersJson = {};
+            // [
+            //   [date,userID,restaurant,placer,selection,
+            //    price,"","",status,offset,""]
+            // ]
+            ordersJson = tempJson.orders.reduce(
+                function (obj, curVal) {
+                    let restaurant = curVal[2];
+                    if (
+                        obj[restaurant] === null ||
+                        obj[restaurant] === undefined
+                    ) {
+                        obj[restaurant] = [];
+                    }
+                    obj[restaurant].push({
+                        "placer": curVal[3],
+                        "selection": curVal[4],
+                        "price": curVal[5]
+                    });
+                    return obj;
+                },
+                {}
+            );
+            Object.keys(ordersJson).forEach(
                 function (restaurant, tableX) {
-                    $("dev#container").append(tableHtml);
-                    $("table:eq(" + tableX + ")").attr("id","table" + tableX);
-                    $("table:eq(" + tableX + " caption)").text(restaurant);
-                    restaurant.orders.forEach(
+                    $("div#table").append(tableHtml);
+                    $("div#table table:eq(" + tableX + ")")
+                        .attr("id", "table" + tableX);
+                    $("div#table table:eq(" + tableX + ") caption")
+                        .text(restaurant);
+                    ordersJson[restaurant].forEach(
                         function (order, index) {
                             let price = Number(order.price);
                             let tax = price * 0.07;
                             let total = price + tax;
-                            $("table:eq(" + tableX + ") tbody").append(
-                                "<tr>" +
-                                "<td>" + index + "</td>" +
-                                "<td>" + order.placer + "</td>" +
-                                "<td>" + order.selection + "</td>" +
-                                "<td>" +
-                                price.toLocaleString(
-                                    "en-US",
-                                    {
-                                        "type": "currency",
-                                        "currency": "USD",
-                                        "minimumFractionDigits": 2,
-                                        "maximumFractionDigits": 2
-                                    }
-                                ) +
-                                "</td>" +
-                                "<td>" +
-                                tax.toLocaleString(
-                                    "en-US",
-                                    {
-                                        "type": "currency",
-                                        "currency": "USD",
-                                        "minimumFractionDigits": 2,
-                                        "maximumFractionDigits": 2
-                                    }
-                                ) +
-                                "</td>" +
-                                "<td>" +
-                                total.toLocaleString(
-                                    "en-US",
-                                    {
-                                        "type": "currency",
-                                        "currency": "USD",
-                                        "minimumFractionDigits": 2,
-                                        "maximumFractionDigits": 2
-                                    }
-                                ) +
-                                "</td>" +
-                                "</tr>"
-                            );
-                            $("table").show();
+                            $("div#table table:eq(" + tableX + ") tbody")
+                                .append(
+                                    "<tr>" +
+                                    "<td>" + (index + 1) + "</td>" +
+                                    "<td>" + order.placer + "</td>" +
+                                    "<td>" + order.selection + "</td>" +
+                                    "<td>" +
+                                    price.toLocaleString(
+                                        "en-US",
+                                        {
+                                            "type": "currency",
+                                            "currency": "USD",
+                                            "minimumFractionDigits": 2,
+                                            "maximumFractionDigits": 2
+                                        }
+                                    ) +
+                                    "</td>" +
+                                    "<td>" +
+                                    tax.toLocaleString(
+                                        "en-US",
+                                        {
+                                            "type": "currency",
+                                            "currency": "USD",
+                                            "minimumFractionDigits": 2,
+                                            "maximumFractionDigits": 2
+                                        }
+                                    ) +
+                                    "</td>" +
+                                    "<td>" +
+                                    total.toLocaleString(
+                                        "en-US",
+                                        {
+                                            "type": "currency",
+                                            "currency": "USD",
+                                            "minimumFractionDigits": 2,
+                                            "maximumFractionDigits": 2
+                                        }
+                                    ) +
+                                    "</td>" +
+                                    "</tr>"
+                                );
                         }
                     );
                 }
             );
+            $("div#table").show();
         }
 
         function display() {

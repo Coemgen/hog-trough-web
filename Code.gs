@@ -55,9 +55,11 @@ function getOrders(userId) {
     ordersObj.orders = ordersSheet.getRange(row, column, numRows, numColumns)
     .getValues();
   }
+  // return orders not specific to one user
   if (!userId) {
     return JSON.stringify(ordersObj);
   }
+  // the running total for a user will be extracted from this result
   ordersObj.users = ss.getSheetByName("Users")
   .getDataRange()
   .getValues();
