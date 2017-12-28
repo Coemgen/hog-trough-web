@@ -1,13 +1,10 @@
 <script>
-/*jslint browser, devel, es6, maxlen: 80*/
+/*jslint browser, devel, maxlen: 80, this*/
 /*global google, jQuery, Sortable*/
-
-(function (jQuery, google, Sortable) {
+(function (jQuery, google) {
     "use strict";
 
     const restaurants = (function ($) {
-        "use strict";
-
         const restaurantsObj = {
             "--TBD--": "https://www.google.com/",
             "BERTUCCI'S": "http://www.bertuccis.com/",
@@ -29,27 +26,77 @@
 
     }(jQuery));
 
-    const orders = (function () {
-        "use strict";
-
+    const orders = (function (google, $) {
         let ordersArr = [];
+        let tableHtml = $("table").html();
 
         function add(newOrder) {
             ordersArr.push(newOrder);
         }
-        
+
+        function displayOrderTables(ordersJsonStr) {
+            let ordersJson = JSON.parse(ordersJsonStr);
+            ordersJson.restaurants.forEach(
+                function (restaurant, tableX) {
+                    $("dev#container").append(tableHtml);
+                    $("table:eq(" + tableX + ")").attr("id","table" + tableX);
+                    $("table:eq(" + tableX + " caption)").text(restaurant);
+                    restaurant.orders.forEach(
+                        function (order, index) {
+                            let price = Number(order.price);
+                            let tax = price * 0.07;
+                            let total = price + tax;
+                            $("table:eq(" + tableX + ") tbody").append(
+                                "<tr>" +
+                                "<td>" + index + "</td>" +
+                                "<td>" + order.placer + "</td>" +
+                                "<td>" + order.selection + "</td>" +
+                                "<td>" +
+                                price.toLocaleString(
+                                    "en-US",
+                                    {
+                                        "type": "currency",
+                                        "currency": "USD",
+                                        "minimumFractionDigits": 2,
+                                        "maximumFractionDigits": 2
+                                    }
+                                ) +
+                                "</td>" +
+                                "<td>" +
+                                tax.toLocaleString(
+                                    "en-US",
+                                    {
+                                        "type": "currency",
+                                        "currency": "USD",
+                                        "minimumFractionDigits": 2,
+                                        "maximumFractionDigits": 2
+                                    }
+                                ) +
+                                "</td>" +
+                                "<td>" +
+                                total.toLocaleString(
+                                    "en-US",
+                                    {
+                                        "type": "currency",
+                                        "currency": "USD",
+                                        "minimumFractionDigits": 2,
+                                        "maximumFractionDigits": 2
+                                    }
+                                ) +
+                                "</td>" +
+                                "</tr>"
+                            );
+                            $("table").show();
+                        }
+                    );
+                }
+            );
+        }
+
         function display() {
-//                    $("table tbody").append(
-//                        "<tr>" +
-//                        "<td>" + 1 + "</td>" +
-//                        "<td>" + "Griffin,Kevin" + "</td>" +
-//                        "<td>" + formObj.orderText + "</td>" +
-//                        "<td>" + formObj.orderPrice + "</td>" +
-//                        "<td>" + formObj.orderPrice * 0.07 + "</td>" +
-//                        "<td>" + formObj.orderPrice + "</td>" +
-//                        "</tr>"
-//                    );
-//                    $("table").show();
+            google.script.run
+                .withSuccessHandler(displayOrderTables)
+                .getOrders();
         }
 
         return {
@@ -57,11 +104,9 @@
             display
         };
 
-    }());
+    }(google, jQuery));
 
     const enterEdit = (function ($, google, orders, restaurants) {
-        "use strict";
-
         let formArr = [];
         let formObj = {};
 
@@ -87,20 +132,15 @@
                     formArr = $("form#newGroupOrder").serializeArray();
                     formObj = formArr.reduce(formArrToObj, {});
                     google.script.run
-                    .withSuccessHandler(orders.display)
-                    .fileOrderToSpreadsheet(formObj);
+                        .withSuccessHandler(orders.display)
+                        .fileOrderToSpreadsheet(formObj);
                 });
                 $("select#restaurant option").click(restaurants.changeUrl);
             });
         }
 
-        function getFormData() {
-            return formObj;
-        }
-
         return {
-            displayForm,
-            getFormData
+            displayForm
         };
 
     }(jQuery, google, orders, restaurants));
@@ -118,10 +158,10 @@
 
     jQuery(function startUp() {
         google.script.run
-        .withSuccessHandler(main)
-        .withUserObject(jQuery)
-        .getData();
+            .withSuccessHandler(main)
+            .withUserObject(jQuery)
+            .getData();
     });
 
-}(jQuery, google, Sortable));
+}(jQuery, google));
 </script>
