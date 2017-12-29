@@ -6,7 +6,6 @@ AdminDirectory, DocumentApp, HtmlService, ScriptProperties, Session,
 PropertiesService, SpreadsheetApp
 */
 
-
 /**
 * write info to external debugFile
 * @param {string} info to be saved for debugging
@@ -271,6 +270,8 @@ function deleteRestrFromSpreadsheet(index) {
 function getData() {
   "use strict";
   var dataObj = {};
+  dataObj.user = AdminDirectory.Users
+  .get(Session.getActiveUser().getEmail());
   dataObj.projectName = PropertiesService.getScriptProperties()
   .getProperties()
   .projectName;

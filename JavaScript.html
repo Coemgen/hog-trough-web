@@ -4,6 +4,24 @@
 (function (jQuery, google) {
     "use strict";
 
+    const user = (function () {
+        let obj = {};
+
+        function get() {
+            return obj;
+        }
+
+        function set(userObj) {
+            obj = userObj;
+        }
+
+        return {
+            get,
+            set
+        };
+
+    }());
+
     const restaurants = (function ($) {
         const restaurantsObj = {
             "--TBD--": "https://www.google.com/",
@@ -132,7 +150,7 @@
 
     }(google, jQuery));
 
-    const enterEdit = (function ($, google, orders, restaurants) {
+    const enterEdit = (function ($, google, orders, restaurants, user) {
         let formArr = [];
         let formObj = {};
 
@@ -149,8 +167,16 @@
 
         function displayForm() {
             $(function () {
+                let userObj = user.get();
                 $("button#newGroupOrder").hide();
                 $("form#newGroupOrder").show();
+                $("form#newGroupOrder input[name=\"userName\"]")
+                    .val(
+                        userObj.name.familyName + "," +
+                        userObj.name.givenName
+                    );
+                $("form#newGroupOrder input[name=\"userId]\"")
+                    .val(userObj.id);
                 $("form#newGroupOrder").submit(function (event) {
                     event.preventDefault();
                     $("form#newGroupOrder").hide();
@@ -169,15 +195,17 @@
             displayForm
         };
 
-    }(jQuery, google, orders, restaurants));
+    }(jQuery, google, orders, restaurants, user));
+
 
     //**************************************************************************
 
-    function main(dataObj, $) {
-        $("h2").text(dataObj.projectName);
+    function main(dataObj) {
+        jQuery("h2").text(dataObj.projectName);
+        user.set(dataObj.user);
         // TODO: if group orders, display them
         // ---group orders code goes here---
-        $("button#newGroupOrder").click(enterEdit.displayForm);
+        jQuery("button#newGroupOrder").click(enterEdit.displayForm);
     }
 
     //**************************************************************************
@@ -185,7 +213,6 @@
     jQuery(function startUp() {
         google.script.run
             .withSuccessHandler(main)
-            .withUserObject(jQuery)
             .getData();
     });
 
