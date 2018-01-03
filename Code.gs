@@ -1,10 +1,22 @@
 /*jslint
-browser, maxlen: 80, white
+browser, devel, maxlen: 80, white
 */
 /*global
 AdminDirectory, DocumentApp, HtmlService, ScriptProperties, Session,
 PropertiesService, SpreadsheetApp
 */
+
+function test() {
+  arr = [0, 1, 2];
+  Logger.log("forEach %s", arr.forEach);
+  Logger.log("map %s", arr.map);
+  Logger.log("filter %s", arr.filter);
+  Logger.log("reduce %s", arr.reduce);
+  Logger.log("some %s", arr.some);
+  Logger.log("every %s", arr.every);
+  Logger.log("find %s", arr.find);
+  Logger.log("findIndex %s", arr.findIndex);
+}
 
 /**
 * write info to external debugFile
@@ -100,21 +112,20 @@ function updateRunningTotal(ss, userId, price) {
   "use strict";
   var sheet = ss.getSheetByName("Users");
   var userArr = sheet.getDataRange().getValues();
-  var i = 0;
   var row = 0;
   var column = 2;
   var oldVal = 0;
   var range = {};
-  for (i = 0; i < userArr.length; i += 1) {
-    if (userId === userArr[i][0]) {
-      row = i + 1;
+  userArr.forEach(function (user, index) {
+    if (user[0] === userId) {
+      row = index + 1;
       range = sheet.getRange(row, column);
       oldVal = Number(range.getValue());
       range.setValue(oldVal + price);
-      return;
     }
-  }
-  if (i === userArr.length) {
+  });
+  // user not found
+  if (row === 0) {
     sheet.appendRow([userId, price]);
     sheet.sort(1);
   }
