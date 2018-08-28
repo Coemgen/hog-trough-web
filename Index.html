@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <?!= include("Stylesheet") ?>
+</head>
+
+<body>
+    <div class="container">
+        <h2>
+            Takeout Orders
+            <span>
+                <button class="btn btn-default btn-sm">
+                    Add New Group Order
+                </button>
+            </span>
+        </h2>
+        <table hidden>
+            <caption></caption>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Placer</th>
+                    <th>Order</th>
+                    <th>Price</th>
+                    <th>Tax</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tfoot></tfoot>
+            <tbody></tbody>
+        </table>
+        <form id="form-order" class="form-horizontal" action="" hidden>
+            <input id="ord-key" type="hidden">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="restaurant">Restaurant:</label>
+                <div class="col-sm-10">
+                    <select  id="restaurant" class="form-control"></select>
+                    <a id="menu-link" target="_blank" href="http://www.google.com">Menu link</a>
+                </div>
+            </div>
+            <div id="num-orders" class="form-group row" hidden>
+                <label for="numberOfOrders" class="col-sm-2 col-form-label">Maximum Number of Orders:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="numberOfOrders" name="numberOfOrders">
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                        <option value="4">Four</option>
+                        <option value="5">Five</option>
+                        <option value="10">Ten</option>
+                        <option value="20">Twenty</option>
+                        <option value="99" selected>Any</option>
+                    </select>
+                </div>
+            </div>
+            <div id="order-by-time" class="form-group row" hidden>
+                <label for="order-by-time-input" class="col-sm-2 col-form-label">Order by date/time</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="datetime-local" id="order-by-time-input" name="orderByTime">
+                </div>
+            </div>
+            <div id="pickup-time" class="form-group row" hidden>
+                <label for="pickup-time-input" class="col-sm-2 col-form-label">Order pickup date/time</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="datetime-local" id="pickup-time-input" name="orderPickupTime">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="order">Order:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="order" placeholder="Pizza, salad, etc.">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="price">Price:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="price" placeholder="0.00" pattern="^\d+\.\d{2}$">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                    <button type="button" class="btn btn-default">Exit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- TODO: combine these scripts into one file -->
+    <?!= include("JsNameSpace") ?>
+    <?!= include("JsUtilities") ?>
+    <?!= include("JsRestaurants") ?>
+    <?!= include("JsOrders") ?>
+    <?!= include("JsMain") ?>
+
+</body>
+
+</html>
