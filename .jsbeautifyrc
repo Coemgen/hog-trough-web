@@ -2,7 +2,8 @@
     "html": {
         "end_with_newline": true,
         "js": {
-            "indent_size": 2
+            "indent_size": 4,
+            "indent_scripts": "separate"
         },
         "css": {
             "indent_size": 2
